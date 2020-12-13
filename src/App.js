@@ -6,12 +6,7 @@ import Contacts from './components/Contacts';
 
 class App extends Component {
   state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', tel: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', tel: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', tel: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', tel: '227-91-26' },
-    ],
+    contacts: [],
   };
 
   handleAddContact = newContact => {
@@ -38,6 +33,19 @@ class App extends Component {
       };
     });
   };
+
+  componentDidMount() {
+    const contacts = JSON.parse(localStorage.getItem('contacts'));
+    if (contacts) {
+      this.setState({ contacts });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.contacts !== this.state.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
 
   render() {
     const { contacts } = this.state;
